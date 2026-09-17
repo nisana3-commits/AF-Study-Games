@@ -25,6 +25,9 @@ The menu also carries a Scripture wall: every verse the lesson cites, grouped
 under the lesson's own questions, with a hide-and-reveal mode for recall
 practice. The page follows the device's light or dark setting, with a toggle.
 
+On a phone the games show on-screen buttons; on a computer they show the keys
+to use instead, and the play field is sized to fit the window.
+
 ## Verse wording
 
 Wherever the study guide quotes a verse, the game uses the guide's wording (NKJV).
