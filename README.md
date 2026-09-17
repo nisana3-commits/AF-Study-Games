@@ -16,9 +16,14 @@ Six games built from Study Guide 1, "Is There Anything Left You Can Trust?"
 | Of Whom Speaketh the Prophet | The twelve Messianic prophecies of section 9 | Philip runs to the scroll the Ethiopian is asking about (Acts 8) |
 | The Way of Thy Commandments | True and false statements from the summary sheet | Run a lamp-lit path; true statements light lamps, false ones fall as stones (Psalm 119) |
 
-The arcade menu also carries a Scripture wall: every verse the lesson cites,
-grouped under the lesson's own questions, with a hide-and-reveal mode for recall
-practice.
+Every game is drawn with Dr. Miller's own illustrations: the ark bearers and the
+Canaan bank, Isaac, the well and the herdsman, the Emmaus road, Philip's desert,
+and the lamp-lit cobbled path with a choice of runner. Cards on the menu are
+labeled by the passage each game is set in.
+
+The menu also carries a Scripture wall: every verse the lesson cites, grouped
+under the lesson's own questions, with a hide-and-reveal mode for recall
+practice. The page follows the device's light or dark setting, with a toggle.
 
 ## Verse wording
 
