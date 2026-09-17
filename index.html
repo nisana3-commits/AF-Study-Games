@@ -159,11 +159,27 @@ header{text-align:center;display:flex;flex-direction:column;align-items:center;g
 .disc .dsrc{font-size:12px;color:var(--muted);margin-top:6px}
 footer{margin-top:40px;font-size:13px;color:var(--muted);text-align:center;max-width:64ch;margin-inline:auto}
 @media (prefers-reduced-motion:reduce){.card{transition:none}}
+/* on a wide screen, the characters from every game keep company in the side margins */
+.deco{display:none}
+@media (min-width:1260px){
+  .deco{display:flex;flex-direction:column;justify-content:space-evenly;align-items:center;position:fixed;top:0;bottom:0;left:0;width:calc((100vw - 992px)/2);max-width:260px;padding:24px 0;pointer-events:none;z-index:0}
+  .deco.right{left:auto;right:0}
+  .deco img{display:block;height:auto;width:auto;max-height:17vh;max-width:78%;filter:drop-shadow(0 6px 10px rgba(11,23,56,.18));animation:bob 5s ease-in-out infinite;opacity:.95}
+  .deco img:nth-child(2){animation-duration:6.2s;animation-delay:-1.2s}
+  .deco img:nth-child(3){animation-duration:5.6s;animation-delay:-2.4s}
+  .deco img:nth-child(4){animation-duration:6.8s;animation-delay:-3.1s}
+  .deco img:nth-child(5){animation-duration:5.3s;animation-delay:-.7s}
+  .wrap{position:relative;z-index:1}
+}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@media (prefers-reduced-motion:reduce){.deco img{animation:none}}
 @media (max-width:480px){.bar .hud{gap:10px;font-size:12px}}
 </style>
 </head>
 <body>
 
+<div class="deco" id="decoL" aria-hidden="true"></div>
+<div class="deco right" id="decoR" aria-hidden="true"></div>
 <div class="wrap">
   <button class="themebtn" id="themebtn" type="button" aria-label="Theme: auto, light, or dark">Auto</button>
   <header>
@@ -865,7 +881,10 @@ function applyTheme(){const t=effectiveTheme();document.documentElement.setAttri
 function initTheme(){try{const saved=localStorage.getItem('trust-arcade-theme');if(saved==='light'||saved==='dark')themeChoice=saved}catch(e){}applyTheme();
   if(mq&&mq.addEventListener)mq.addEventListener('change',()=>{if(themeChoice==='auto')applyTheme()});
   $('#themebtn').onclick=()=>{themeChoice=themeChoice==='auto'?'light':themeChoice==='light'?'dark':'auto';try{if(themeChoice==='auto')localStorage.removeItem('trust-arcade-theme');else localStorage.setItem('trust-arcade-theme',themeChoice)}catch(e){}applyTheme()}}
-function start(){initTheme();renderMenu();renderWall();[ARK_SPRITE,ISAAC_IMG,WELL_IMG,EMMAUS_BG,WALK_IMG,QB_BG,SCROLL_IMG,PHILIP_IMG,CHARIOT_IMG,COBBLE_IMG,LAMP_IMG,ROCK_IMG,RUNNERS.woman.im,RUNNERS.man.im,CANAAN_IMG,WAVE_L,WAVE_R].forEach(im=>im.onload=()=>{if(!game)renderMenu()});Object.values(ANGEL_IMG).forEach(im=>im.onload=()=>{if(!game)renderMenu()})}
+function buildDeco(){/* one column of characters on each side: left from the first three games, right from the last three */
+  const L=[ANGEL_IMG.white,ARK_SPRITE,ISAAC_IMG,WELL_IMG,HERD_IMG],R=[WALK_IMG,PHILIP_IMG,CHARIOT_IMG,RUNNERS.woman.im,RUNNERS.man.im];
+  [['#decoL',L],['#decoR',R]].forEach(([sel,list])=>{const el=$(sel);if(!el)return;el.innerHTML='';list.forEach(im=>{if(!im||!im.src)return;const t=document.createElement('img');t.src=im.src;t.alt='';t.decoding='async';el.appendChild(t)})})}
+function start(){initTheme();renderMenu();renderWall();buildDeco();[ARK_SPRITE,ISAAC_IMG,WELL_IMG,EMMAUS_BG,WALK_IMG,QB_BG,SCROLL_IMG,PHILIP_IMG,CHARIOT_IMG,COBBLE_IMG,LAMP_IMG,ROCK_IMG,RUNNERS.woman.im,RUNNERS.man.im,CANAAN_IMG,WAVE_L,WAVE_R].forEach(im=>im.onload=()=>{if(!game)renderMenu()});Object.values(ANGEL_IMG).forEach(im=>im.onload=()=>{if(!game)renderMenu()})}
 window.claude?.hot?.ready?window.claude.hot.ready(start):start();
 </script>
 
