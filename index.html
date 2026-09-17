@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
 <meta name="description" content="Six Bible-themed study games built from Amazing Facts Study Guide 1, Is There Anything Left You Can Trust?">
 <style>
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -142,7 +143,7 @@ footer{margin-top:40px;font-size:13px;color:var(--muted);text-align:center;max-w
 <body>
 
 <div class="wrap">
-  <button class="themebtn" id="themebtn" type="button" aria-label="Switch between light and dark">Light</button>
+  <button class="themebtn" id="themebtn" type="button" aria-label="Theme: auto, light, or dark">Auto</button>
   <header>
     <div class="eyebrow">Amazing Facts Study Guide 1</div>
     <h1 class="wordmark">Trust Arcade</h1>
@@ -758,9 +759,14 @@ function renderWall(){const el=$('#walllist');el.innerHTML=WALL.map(sec=>{let ca
   $('#walltoggle').textContent=wallHidden?'Show verse text':'Hide verse text';
   el.querySelectorAll('.vcard').forEach(b=>b.onclick=()=>{b.querySelector('.vtext').classList.toggle('hid');b.querySelector('.vhint').classList.toggle('hid')})}
 $('#walltoggle').onclick=()=>{wallHidden=!wallHidden;try{localStorage.setItem('trust-arcade-wall',wallHidden?'hidden':'shown')}catch(e){}renderWall()};
-/* light and dark: the brand's two grounds */
-function applyTheme(t){document.documentElement.setAttribute('data-theme',t);$('#themebtn').textContent=t==='dark'?'\u2600\uFE0E Light':'\u263D Dark';try{localStorage.setItem('trust-arcade-theme',t)}catch(e){}}
-function initTheme(){let t='dark';try{t=localStorage.getItem('trust-arcade-theme')||t}catch(e){}applyTheme(t);$('#themebtn').onclick=()=>applyTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark')}
+/* light and dark: the brand's two grounds. Auto follows the device setting. */
+const mq=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)'):null;
+let themeChoice='auto';
+function effectiveTheme(){return themeChoice==='auto'?(mq&&mq.matches?'dark':'light'):themeChoice}
+function applyTheme(){const t=effectiveTheme();document.documentElement.setAttribute('data-theme',t);$('#themebtn').textContent=themeChoice==='auto'?'◐ Auto':themeChoice==='light'?'☀︎ Light':'☽ Dark';$('#themebtn').title=themeChoice==='auto'?'Matching your device ('+t+'). Tap to choose a theme.':'Tap to change theme'}
+function initTheme(){try{const saved=localStorage.getItem('trust-arcade-theme');if(saved==='light'||saved==='dark')themeChoice=saved}catch(e){}applyTheme();
+  if(mq&&mq.addEventListener)mq.addEventListener('change',()=>{if(themeChoice==='auto')applyTheme()});
+  $('#themebtn').onclick=()=>{themeChoice=themeChoice==='auto'?'light':themeChoice==='light'?'dark':'auto';try{if(themeChoice==='auto')localStorage.removeItem('trust-arcade-theme');else localStorage.setItem('trust-arcade-theme',themeChoice)}catch(e){}applyTheme()}}
 function start(){initTheme();renderMenu();renderWall()}
 window.claude?.hot?.ready?window.claude.hot.ready(start):start();
 </script>
