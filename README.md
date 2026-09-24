@@ -3,7 +3,7 @@
 Bible-themed study games for the Amazing Facts Bible Study Guides, built for the
 Skool communities of Dr. Nisana Miller, DVM.
 
-## Trust Arcade
+## Truth Arcade
 
 Six games built from Study Guide 1, "Is There Anything Left You Can Trust?"
 
@@ -27,6 +27,19 @@ practice. The page follows the device's light or dark setting, with a toggle.
 
 On a phone the games show on-screen buttons; on a computer they show the keys
 to use instead, and the play field is sized to fit the window.
+
+## Lesson 2: Did God Create the Devil?
+
+A second tab carries six games built from Study Guide 2, with their own art.
+
+| Game | Lesson content | Story |
+|---|---|---|
+| Angel of Light | Twenty-six multiple-choice questions on Lucifer, his fall, Satan's methods, and the Father's love | Four veiled angels carry the answers; a heart reveals the true one (2 Corinthians 11:14) |
+| Every Precious Stone | The six "check the items" lists from the quiz | Claims fall as gems; stack the true ones in gold and the false in blue (Ezekiel 28) |
+| How You Are Fallen | The lesson's story in twelve steps | Climb rope ladders from Lucifer created perfect to every knee bowing (Isaiah 14) |
+| To and Fro on the Earth | The twelve ways the Bible says Satan works | Gather scrolls through a maze while lions prowl, one, two, then three (Job 2:2) |
+| Wipe Off the Slander | Nine slanders against the Father the lesson answers | Send a flame into storm clouds and answer from the Scriptures; the sky brightens to dawn (John 16:27) |
+| Fiery Stones | Twelve sayings from the lesson and where each is written | Hop the burning stones of the mountain of God to the right reference (Ezekiel 28:14) |
 
 ## Verse wording
 
