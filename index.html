@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark light">
 <meta name="description" content="Six Bible-themed study games built from Amazing Facts Study Guide 1, Is There Anything Left You Can Trust?">
 <style>
@@ -72,7 +72,8 @@ header{text-align:center;display:flex;flex-direction:column;align-items:center;g
 .btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
 .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .screen{position:relative;background:#0B1738;border:1px solid var(--surface-border);border-radius:16px;overflow:hidden}
-#cv{display:block;width:100%;height:auto;max-width:100%;aspect-ratio:3/2;touch-action:none}
+html,body,#stage,.screen{touch-action:manipulation}
+#cv{display:block;width:100%;height:auto;max-width:100%;aspect-ratio:3/2;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 .howto{font-size:14px;color:var(--muted);margin:10px 0 0;min-height:1.5em}
 /* on a computer, fit the whole play field, help line and controls in the window */
 @media (min-width:900px){
@@ -91,7 +92,7 @@ header{text-align:center;display:flex;flex-direction:column;align-items:center;g
     .ovin:has(.pickwrap) .pickbtn img{height:78px}}
   #stage .howto{text-align:center;max-width:70ch;margin-inline:auto;font-size:15px}
 }
-.pad{display:flex;justify-content:center;gap:8px;margin-top:12px;flex-wrap:wrap}
+.pad{display:flex;justify-content:center;gap:8px;margin-top:12px;flex-wrap:wrap;touch-action:manipulation}
 .pad button{width:56px;height:48px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--accent);font:700 18px/1 var(--text);cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none}
 .pad button.wide{width:auto;min-width:120px;padding:0 18px;font-size:13px;letter-spacing:.08em;text-transform:uppercase}
 .pad.cross{display:grid;grid-template-columns:repeat(3,64px);grid-template-rows:repeat(3,54px);gap:6px;justify-content:center}
@@ -617,7 +618,7 @@ addEventListener('keyup',e=>{const k=e.code==='Space'||e.key===' '||e.code==='En
 addEventListener('blur',()=>{for(const k in keys)keys[k]=false});
 const DEFAULT_PAD=[['ArrowLeft','\u25C0','Left'],['ArrowUp','\u25B2','Up'],['ArrowDown','\u25BC','Down'],['ArrowRight','\u25B6','Right']];
 function buildPad(items,cols){const pad=$('#pad');pad.innerHTML='';pad.className='pad'+(cols===2?' cols2':cols==='cross'?' cross':cols==='tf'?' tf':'');items.forEach(([k,label,aria,cls])=>{const b=document.createElement('button');b.dataset.k=k;b.innerHTML=label;b.setAttribute('aria-label',aria||label);if(cls)b.className=cls;
-  const dn=e=>{e.preventDefault();if(!game)return;if(!keys[k]){keys[k]=true;if(!paused&&game.key)game.key(k)}};const up=()=>{keys[k]=false};b.addEventListener('pointerdown',dn);b.addEventListener('pointerup',up);b.addEventListener('pointerleave',up);b.addEventListener('pointercancel',up);pad.appendChild(b)})}
+  const dn=e=>{e.preventDefault();if(!game)return;if(!keys[k]){keys[k]=true;if(!paused&&game.key)game.key(k)}};const up=()=>{keys[k]=false};b.addEventListener('pointerdown',dn);b.addEventListener('touchend',e=>{e.preventDefault()},{passive:false});b.addEventListener('pointerup',up);b.addEventListener('pointerleave',up);b.addEventListener('pointercancel',up);pad.appendChild(b)})}
 /* Touch on the play screen: press, drag, and double-tap go to the game when it defines them; otherwise a tap. */
 function cvxy(e){const r=cv.getBoundingClientRect();return [(e.clientX-r.left)*W/r.width,(e.clientY-r.top)*H/r.height]}
 let lastTap=0,lastTX=0,lastTY=0,dragging=false;
@@ -626,6 +627,9 @@ cv.addEventListener('pointerdown',e=>{if(!game||paused)return;e.preventDefault()
   if(game.press)game.press(x,y);if(dbl&&game.dbltap){game.dbltap(x,y);lastTap=0}else if(!game.press&&game.tap)game.tap(x,y)});
 cv.addEventListener('pointermove',e=>{if(!dragging||!game||paused||!game.drag)return;const [x,y]=cvxy(e);game.drag(x,y)});
 ['pointerup','pointercancel'].forEach(t=>cv.addEventListener(t,()=>{dragging=false}));
+/* Stop the browser's double-tap zoom on the play screen and the pad: rapid taps are how the games fire. */
+['touchstart','touchend'].forEach(t=>cv.addEventListener(t,e=>{if(game)e.preventDefault()},{passive:false}));
+['dblclick','gesturestart'].forEach(t=>document.addEventListener(t,e=>{if(e.target.closest&&e.target.closest('#cv,#pad,.screen'))e.preventDefault()},{passive:false}));
 function bg(){ctx.fillStyle=C.deep;ctx.fillRect(0,0,W,H)}
 /* Verse banner: shown on the canvas after a correct answer */
 const vb={t:0};
